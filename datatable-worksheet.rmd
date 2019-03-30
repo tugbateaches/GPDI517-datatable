@@ -1,0 +1,77 @@
+---
+title: "GPDI517: Introduction to data.table"
+author: "by Tugba Ozturk"
+date: "April 4, 2019"
+output:
+  prettydoc::html_pretty:
+    theme: cayman
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## **data.table** is another R library to analyze data sets!
+
+Let's start with installing and loading the `data.table` library:
+
+```{r installation}
+#install.packages("data.table") #installs the R package
+library("data.table") #loads the package
+```
+
+## It turns data frames into data tables to perform faster manipulation.
+
+To create a local data table for our practices, we can use the `airquality` data frame:
+
+```{r create-mydf, echo=TRUE}
+mydf <- data.table(airquality)
+```
+
+Note that the `echo` parameter can be set to `FALSE` to prevent printing of the R code in the pdf document. While practicing, we will keep the code chunks visible. 
+
+To print the data table, use the following: 
+
+```{r print-mydf}
+print(mydf)
+```
+
+A data table is an enhanced data frame. When printed, there is no need to use `head()` function.
+
+Let's subset `mydf` to see which values (rows) have the `Wind` variable larger than 8 in September:
+
+```{r subsetting}
+mydf[Wind >8 &  Month==9L]
+```
+
+The following lines would sort `mydf` first by `Day` column and then by `Temp`:
+
+```{r sorting}
+mydf[order(Day,-Temp)]
+```
+
+Note that `Day` and `Temp` are in ascending and descending orders, respectively since `Temp` is given with a `-` sign.
+
+Here, add comment lines to explain what the following code chunk does:
+
+```{r practice1}
+mydf[,Temp]
+mydf[,c("Day","Temp")]
+```
+
+Here, add comment lines explaining how the following lines of code **differ** from one another:
+
+```{r practice2}
+mean(mydf[,Ozone])
+mydf[,mean(Ozone, na.rm=TRUE)]
+mydf[mean(Ozone, na.rm=TRUE)]
+mydf[,.(mean(Ozone, na.rm=TRUE))]
+mydf[,.(mean(Ozone, na.rm=TRUE)), by=Month]
+```
+
+
+Run the following code and fix it if necessary:
+
+```{r practice3}
+mydf[,.(aveOz = mean(Ozone), sd(Ozone)), by=Month]
+```
